@@ -15,10 +15,7 @@ requests.packages.urllib3.disable_warnings()
     
 
 def clean_spark_immigration_data(df):
-    """Clean immigration dataframe
-    param
-        df: spark dataframe with immigration data
-    """
+
     total_records = df.count()
     
     print(f'Total records in Immigration source data: {total_records:,}')
@@ -48,11 +45,7 @@ def clean_spark_immigration_data(df):
 
 
 def clean_spark_temperature_data(df):
-    """Clean global temperatures dataset
-    
-    param 
-        df: dataframe representing global temperatures
-    """
+
     total_records = df.count()
     
     print(f'Total records in Temperature source data: {total_records:,}')
@@ -82,11 +75,7 @@ def clean_spark_temperature_data(df):
 
 
 def aggregate_temperature_data(df):
-    """Aggregate clean temperature data at country level
-    
-    param 
-        df: spark dataframe of clean global temperaturs data
-    """
+
     new_df = df.select(['Country', 'AverageTemperature']).groupby('Country').avg()
     
     new_df = new_df.withColumnRenamed('avg(AverageTemperature)', 'average_temperature')
@@ -97,11 +86,6 @@ def aggregate_temperature_data(df):
 
 
 def clean_spark_demographics_data(df):
-    """Clean the US demographics dataset
-    
-    param 
-        df: spark dataframe of US demographics dataset
-    """
     
     total_records= df.count()
     print(f'Total records in Demographics source data: {total_records:,}')
