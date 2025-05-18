@@ -12,14 +12,7 @@ from tools import aggregate_temperature_data
 
 
 def create_immigration_fact_table(spark, df, output_data):
-    """
-    Creates a immigration fact table.
-    
-    Params
-        spark: spark session
-        df: spark dataframe of immigration events
-        output_data: path to write dimension dataframe to
-    """
+
     # get visa_type dimension
     dim_df = get_visa_type_dimension(spark, output_data)
 
@@ -57,13 +50,7 @@ def create_immigration_fact_table(spark, df, output_data):
 
 
 def create_demographics_dimension_table(df, output_data):
-    """
-    Creates a demographics dimension table.
-    
-    Parameters
-        df: spark dataframe of us demographics survey data
-        output_data: path to write dimension dataframe to
-    """
+
     dim_df = df.withColumnRenamed('Median Age', 'median_age') \
         .withColumnRenamed('Male Population', 'male_population') \
         .withColumnRenamed('Female Population', 'female_population') \
@@ -83,13 +70,7 @@ def create_demographics_dimension_table(df, output_data):
 
 
 def create_visa_type_dimension_table(df, output_data):
-    """
-    Creates a visa type dimension table.
-    
-    Parameters
-        df: spark dataframe of immigration events
-        output_data: path to write dimension dataframe to
-    """
+
     # create visatype df from visatype column
     visatype_df = df.select(['visatype']).distinct()
 
@@ -108,16 +89,7 @@ def get_visa_type_dimension(spark, output_data):
 
 
 def create_country_dimension_table(spark, df, temp_df, output_data, mapping_file):
-    """
-    Creates a country dimension table.
-    
-    Parameters:
-        spark: spark session object
-        df: spark dataframe of immigration events
-        temp_df: spark dataframe of global land temperatures data.
-        output_data: path to write dimension dataframe to
-        mapping_file: csv file that maps country codes to country names
-    """
+
     # create temporary view for immigration data
     df.createOrReplaceTempView("immigration_view")
 
@@ -162,13 +134,7 @@ def create_country_dimension_table(spark, df, temp_df, output_data, mapping_file
 
 
 def create_immigration_time_dimension_table(df, output_data):
-    """
-    Creates an immigration time dimension table.
-    
-    Parameters:
-        df: spark dataframe of immigration events
-        output_data: path to write dimension dataframe to
-    """
+
 
     # create initial time df from arrdate column
     time_df = df.select(['arrdate']).distinct()
@@ -191,13 +157,7 @@ def create_immigration_time_dimension_table(df, output_data):
 
 
 def quality_checks(df, table_name):
-    """
-    Count checks on fact and dimension tables.
-    
-    Parameters:
-        df: spark dataframe to check counts on
-        table_name: corresponding name of table
-    """
+
     total_count = df.count()
 
     if total_count == 0:
@@ -248,14 +208,7 @@ def second_quality_checks_country(df):
 
 
 def nullValueCheck(spark_ctxt, tables_to_check):
-    """
-    This function performs null value checks on specific columns of given tables received \
-    as parameters and raises a ValueError exception when null values are encountered.
-    It receives the following parameters:
-    spark_ctxt: spark context where the data quality check is to be performed
-    tables_to_check: A dictionary containing (table, columns) pairs specifying for each table,\
-    which column is to be checked for null values.   
-    """  
+
     for table in tables_to_check:
         print(f"Performing primary key null value check on table {table}...")
         for column in tables_to_check[table]:
