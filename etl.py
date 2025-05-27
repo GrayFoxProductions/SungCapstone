@@ -37,7 +37,7 @@ def process_immigration_data(spark, input_data, output_data, file_name, temperat
     immigration_file = input_data + file_name
 
     # read immigration data file
-    immigration_df = spark.read.load('immigration_file')
+    immigration_df = spark.read.load(immigration_file)
 
     # clean immigration spark dataframe
     immigration_df = tools.clean_spark_immigration_data(immigration_df)
